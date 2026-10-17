@@ -7,6 +7,17 @@ import (
 	"time"
 )
 
+func TestRoundTripDelaySubtractsServerProcessingTime(t *testing.T) {
+	t1 := time.Unix(1_700_000_000, 0)
+	t2 := t1.Add(time.Hour + 20*time.Millisecond)
+	t3 := t2.Add(18 * time.Millisecond)
+	t4 := t1.Add(55 * time.Millisecond)
+
+	if got, want := roundTripDelay(t1, t2, t3, t4), 37*time.Millisecond; got != want {
+		t.Fatalf("roundTripDelay() = %s, want %s", got, want)
+	}
+}
+
 func TestProbeCalculatesOffsetFromServerTimestamps(t *testing.T) {
 	const serverOffset = 80 * time.Millisecond
 	address := startUDPFixture(t, func(request []byte) []byte {

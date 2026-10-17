@@ -35,7 +35,7 @@ The CSV columns are `server`, `offset`, `round_trip`, and `measured_at`.
 
 ## Notes
 
-Offset is estimated from one NTP exchange. Unequal network delays in each direction affect that estimate, so this is useful for inspection and troubleshooting, not clock discipline or long-term drift measurement. Responses are not authenticated, so do not treat the result as a trusted time source. The default Google Public NTP service uses leap-smear time; avoid mixing it with non-smeared sources when comparing results. See [Google Public NTP](https://developers.google.com/time/faq).
+Offset and round-trip delay are estimated from one NTP exchange using its four timestamps; the delay calculation subtracts time spent processing the request on the server. Unequal network delays in each direction affect the offset estimate, so this is useful for inspection and troubleshooting, not clock discipline or long-term drift measurement. Responses are not authenticated, so do not treat the result as a trusted time source. The default Google Public NTP service uses leap-smear time; avoid mixing it with non-smeared sources when comparing results. See [Google Public NTP](https://developers.google.com/time/faq).
 
 ## Checks
 

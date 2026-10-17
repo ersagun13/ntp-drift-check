@@ -116,9 +116,13 @@ func Probe(ctx context.Context, address string, timeout time.Duration) (Sample, 
 	return Sample{
 		Server:     address,
 		Offset:     offset,
-		RoundTrip:  t4.Sub(t1),
+		RoundTrip:  roundTripDelay(t1, t2, t3, t4),
 		MeasuredAt: t4.UTC(),
 	}, nil
+}
+
+func roundTripDelay(t1, t2, t3, t4 time.Time) time.Duration {
+	return t4.Sub(t1) - t3.Sub(t2)
 }
 
 func putTimestamp(dst []byte, value time.Time) {
