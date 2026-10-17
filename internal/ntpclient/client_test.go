@@ -30,7 +30,8 @@ func TestProbeCalculatesOffsetFromServerTimestamps(t *testing.T) {
 		response[1] = 2
 		copy(response[24:32], request[40:48])
 		serverReceive := time.Now().Add(serverOffset)
-		serverTransmit := serverReceive.Add(2 * time.Millisecond)
+		time.Sleep(2 * time.Millisecond)
+		serverTransmit := time.Now().Add(serverOffset)
 		putTimestamp(response[32:40], serverReceive)
 		putTimestamp(response[40:48], serverTransmit)
 		return response
