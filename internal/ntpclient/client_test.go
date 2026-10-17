@@ -80,6 +80,19 @@ func TestProbeRejectsInvalidVersion(t *testing.T) {
 	}
 }
 
+func TestProbeRejectsUnsynchronizedStratum(t *testing.T) {
+	address := startUDPFixture(t, func(request []byte) []byte {
+		response := validResponse(request)
+		response[1] = 16
+		return response
+	})
+
+	_, err := Probe(context.Background(), address, time.Second)
+	if err == nil {
+		t.Fatal("Probe() error = nil, want unsynchronized-stratum error")
+	}
+}
+
 func TestProbeTimesOutWithinConfiguredDuration(t *testing.T) {
 	address := startUDPFixture(t, func([]byte) []byte { return nil })
 	timeout := 80 * time.Millisecond

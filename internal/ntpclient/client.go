@@ -93,8 +93,8 @@ func Probe(ctx context.Context, address string, timeout time.Duration) (Sample, 
 	if leap == 3 {
 		return Sample{}, fmt.Errorf("NTP server %q reports that it is unsynchronized", address)
 	}
-	if response[1] == 0 {
-		return Sample{}, fmt.Errorf("NTP server %q returned stratum 0 (kiss-of-death or unsynchronized)", address)
+	if response[1] == 0 || response[1] > 15 {
+		return Sample{}, fmt.Errorf("NTP server %q returned unsynchronized stratum %d", address, response[1])
 	}
 	if string(response[24:32]) != string(request[40:48]) {
 		return Sample{}, fmt.Errorf("NTP response from %q does not match the request timestamp", address)
