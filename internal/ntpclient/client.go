@@ -112,7 +112,7 @@ func Probe(ctx context.Context, address string, timeout time.Duration) (Sample, 
 		return Sample{}, fmt.Errorf("decode server transmit timestamp from %q: %w", address, err)
 	}
 
-	offset := t2.Sub(t1)/2 + t3.Sub(t4)/2
+	offset := (t2.Sub(t1) + t3.Sub(t4)) / 2
 	return Sample{
 		Server:     address,
 		Offset:     offset,
